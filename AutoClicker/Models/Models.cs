@@ -59,13 +59,11 @@ namespace AutoClicker.Models
 
 
 
-    public class FansBot : DBModel, IBot
+    public class Bot : DBModel, IBot
     {
         [BsonId]
         public ObjectId Id { get; set; }
-        
-        [BsonElement("url")]
-        public string Url { get; set; }
+
         [BsonElement("region")]
         public string Region { get; set; }
         [BsonElement("city")]
@@ -80,37 +78,15 @@ namespace AutoClicker.Models
         [BsonElement("welcomeMsg")]
         public string[] WelcomeMsg { get; set; }
 
-        [BsonElement("sjBotId")]
-        public ObjectId ShangjiaBotId { get; set; }
-
         [BsonElement("banWords")]
         public string[] BanKeywords { get; set; }
-
+        [BsonElement("exemptions")]
+        public string[] Exemptions { get; set; }
+        [BsonElement("roomNumber")]
+        public int LatestRooms { get; set; }
     }
 
-    //public class FanToAdd: DBModel
-    //{
-
-    //    [BsonId]
-    //    public ObjectId Id { get; set; }
-
-    //    [BsonElement("name")]
-    //    public string Name { get; set; }
-    //    [BsonElement("wxRef")]
-    //    public string WxRef { get; set; }
-    //    [BsonElement("sjBotRef")]
-    //    public string ShangjiaBotWxRef { get; set; }
-
-    //    [BsonElement("region")]
-    //    public string Region { get; set; }
-    //    [BsonElement("city")]
-    //    public string City { get; set; }
-    //    [BsonElement("gender")]
-    //    public string Gender { get; set; }
-
-
-
-    //}
+    
     public class ChatRoom: DBModel
     {
         [BsonId]
@@ -119,33 +95,15 @@ namespace AutoClicker.Models
         public string Name { get; set; }
         [BsonElement("wxRef")]
         public string WxRef { get; set; }
-        [BsonElement("botWxRef")]
-        public string BotWxRef { get; set; }
+        [BsonElement("botRef")]
+        public string BotRef { get; set; }
         [BsonElement("created")]
         public DateTime Created { get; set; }
         [BsonElement("captured")]
         public DateTime? Captured { get; set; }
 
     }
-    public class ExtractAccount: DBModel
-    {
-        [BsonId]
-        public ObjectId Id { get; set; }
-        [BsonElement("name")]
-        public string Name { get; set; }
-        [BsonElement("wxRef")]
-        public string WxRef { get; set; }
-        [BsonElement("gender")]
-        public string Gender { get; set; }
-        [BsonElement("location")]
-        public string[] Location { get; set; }
-        [BsonElement("topics")]
-        public string[] Topics { get; set; }
-        [BsonElement("sjBotRef")]
-        public string sjBotWxRef { get; set; }
-
-    }
-
+   
     public class Sub : DBModel
     {
         [BsonElement("customerId")]
@@ -167,23 +125,7 @@ namespace AutoClicker.Models
         public DateTime LastBroadcast { get; set; }
     }
 
-    public class HeadcountWeb : DBModel
-    {
-        [BsonId]
-        public ObjectId Id { get; set; }
-
-        [BsonElement("name")]
-        public string Name { get; set; }
-        [BsonElement("wxRef")]
-        public string WxRef { get; set; }
-        [BsonElement("count")]
-        public int Count { get; set; }
-        [BsonElement("date")]
-        public DateTime Created{ get; set; }       
-        [BsonElement("topics")]
-        public string[] Topics { get; set; }
-
-    }
+  
 
     public class WeishangWebModel :WebModel
     {
@@ -220,48 +162,7 @@ namespace AutoClicker.Models
 
     }
 
-    public class ShangjiaBot : DBModel, IBot
-    {
-        [BsonId]
-        public ObjectId Id { get; set; }
 
-        [BsonElement("name")]
-        public string Name { get; set; }
-        [BsonElement("wxRef")]
-        public string WxRef { get; set; }
-        [BsonElement("region")]
-        public string Region { get; set; }
-        [BsonElement("city")]
-        public string City { get; set; }
-        [BsonElement("url")]
-        public string Url { get; set; }
-        [BsonElement("roomNumber")]
-        public int LatestRooms { get; set; }
-        [BsonElement("exemptions")]
-        public string[] Exemptions { get; set; }
-        [BsonElement("banWords")]
-        public string[] BanKeywords { get; set; }
-        [BsonElement("greetings")]
-        public string GreetingMsg { get; set; }
-        
-
-    }
-    public class Friend : DBModel
-    {
-        [BsonId]
-        public ObjectId Id { get; set; }
-        [BsonElement("name")]
-        public string Name { get; set; }
-        [BsonElement("region")]
-        public string Region { get; set; }
-        [BsonElement("city")]
-        public string City { get; set; }
-        [BsonElement("wxRef")]
-        public string WxRef { get; set; }
-        [BsonElement("botWxRef")]
-        public string BotWxRef { get; set; }
-
-    }
     public class FriendRequest : DBModel
     {
         [BsonId]
@@ -278,7 +179,7 @@ namespace AutoClicker.Models
         public string Topic { get; set; }
     }
 
-    public class Monitor
+    public class LocalJob
     {
         [BsonId]
         public ObjectId Id { get; set; }
@@ -298,6 +199,15 @@ namespace AutoClicker.Models
         public DateTime End { get; set; }
         [BsonElement("log")]
         public string Log { get; set; }
+        [BsonElement("jobType")]
+        public int Type { get; set; }
+    }
+
+    public enum JobType
+    {
+        Broadcast=0,
+        AddFans=2,
+        
     }
 
     
