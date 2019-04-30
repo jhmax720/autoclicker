@@ -1,6 +1,7 @@
 .vs
 packages
 ./bin
-./obj
+./obj/*
 /AutoClicker/tessdata
 /AutoClicker/bin/Debug
+/AutoClicker/obj/Debug
