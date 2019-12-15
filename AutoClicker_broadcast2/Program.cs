@@ -8,19 +8,24 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Configuration;
+
 
 namespace AutoClicker_broadcast2
 {
     class Program
     {
-        public static string sourceCSV = @"C:\Users\msi-laptop\Desktop\jess.csv";
-        public static string imageFolder = @"C:\Users\msi-laptop\Source\Repos\AutoClicker\AutoClicker_broadcast2\Data\Images";
-        public static string textFolder = @"C:\Users\msi-laptop\Source\Repos\AutoClicker\AutoClicker_broadcast2\Data\Msg";
-//        public static string text = @".🌹🌹 测试
-//1🌹🌹 test
-//.🌹🌹 测试
-//1🌹🌹 test";
-        
+        public static string sourceCSV = ConfigurationManager.AppSettings["sourceCSV"].ToString();
+
+        public static string imageFolder = ConfigurationManager.AppSettings["imageFolder"].ToString();
+        public static string textFolder = ConfigurationManager.AppSettings["textFolder"].ToString();
+
+
+        //        public static string text = @".🌹🌹 测试
+        //1🌹🌹 test
+        //.🌹🌹 测试
+        //1🌹🌹 test";
+
         public static IList<string> groups = new List<string>();
         
 
@@ -178,10 +183,6 @@ namespace AutoClicker_broadcast2
                 {
                     chineseString += " ";
 
-                    //if (chineseString.Length > 0)
-                    //{
-                    //    break;
-                    //}
                 }
             }
 
