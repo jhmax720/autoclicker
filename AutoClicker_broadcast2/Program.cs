@@ -85,7 +85,7 @@ namespace AutoClicker_broadcast2
 
                 MouseLClick(1512, 115);
                 //select the chat panel
-                MouseLClick(1793, 572);
+                MouseLClick(583, 969);
 
                 
                 foreach (var imgPath in images)
