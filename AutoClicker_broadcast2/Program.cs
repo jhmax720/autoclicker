@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Configuration;
-
+using AutoClicker.Helpers;
 
 namespace AutoClicker_broadcast2
 {
@@ -19,7 +19,7 @@ namespace AutoClicker_broadcast2
 
         public static string imageFolder = ConfigurationManager.AppSettings["imageFolder"].ToString();
         public static string textFolder = ConfigurationManager.AppSettings["textFolder"].ToString();
-
+        public static string exclusionString = ConfigurationManager.AppSettings["exclusion"].ToString();
 
         //        public static string text = @".🌹🌹 测试
         //1🌹🌹 test
@@ -35,6 +35,7 @@ namespace AutoClicker_broadcast2
             //loop through images and paste
             var images = GetAllFilePaths(imageFolder);
             var words = GetAllFilePaths(textFolder);
+            var exclusions = exclusionString.Split(';');
 
             using (var reader = new StreamReader(sourceCSV))
             {
@@ -73,19 +74,30 @@ namespace AutoClicker_broadcast2
                 }
             }
 
+            Logger.Instance.Log(LogLevel.Information, $"begin sending msgs to {groups.Count} groups");
 
             foreach (var groupName in groups)
             {
+                if(exclusions.Any(g=> groupName.Contains(g)))
+                {
+                    Logger.Instance.Log(LogLevel.Information, $"skipping msg to group ${groupName}");
+
+                    continue;
+                }
+                Logger.Instance.Log(LogLevel.Information, $"sending msg to group ${groupName}");
+
+
+
                 //go to search bar
-                MouseLClick(1558, 39);
-                MouseLClick(1558, 39);
+                MouseLClick(-1229, 340);
+                MouseLClick(-1229, 340);
                 //paste the groupName
                 CopyAndPaste(groupName);
                 //select the first one in the 
 
-                MouseLClick(1512, 115);
+                MouseLClick(-1232, 426);
                 //select the chat panel
-                MouseLClick(583, 969);
+                MouseLClick(-916, 969);
 
                 
                 foreach (var imgPath in images)
@@ -112,11 +124,12 @@ namespace AutoClicker_broadcast2
                 SimKeyboard.KeyUp(13);
             }
 
+            Logger.Instance.Log(LogLevel.Information, $"end sending msgs to {groups.Count} groups");
         }
         private static void CopyAndPaste(string text)
         {
             Clipboard.SetText(text);
-            Thread.Sleep(100);
+            Thread.Sleep(300);
             Paste();
         }
 
@@ -124,15 +137,15 @@ namespace AutoClicker_broadcast2
         private static void Paste()
         {
             SimKeyboard.KeyDown(17);
-            Thread.Sleep(100);
+            Thread.Sleep(300);
             SimKeyboard.KeyDown((byte)'V');
-            Thread.Sleep(100);
+            Thread.Sleep(300);
 
             
             SimKeyboard.KeyUp(17);
-            Thread.Sleep(100);
+            Thread.Sleep(300);
             SimKeyboard.KeyUp((byte)'V');
-            Thread.Sleep(100);
+            Thread.Sleep(300);
         }
 
         private static List<string> GetAllFilePaths(string path)
