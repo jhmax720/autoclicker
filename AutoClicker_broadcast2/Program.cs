@@ -35,7 +35,7 @@ namespace AutoClicker_broadcast2
             //loop through images and paste
             var images = GetAllFilePaths(imageFolder);
             var words = GetAllFilePaths(textFolder);
-            var exclusions = exclusionString.Split(';');
+            var exclusions = exclusionString.Split(';').Where(x=>!string.IsNullOrEmpty(x));
 
             using (var reader = new StreamReader(sourceCSV))
             {
