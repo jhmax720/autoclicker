@@ -32,6 +32,9 @@ namespace AutoClicker_broadcast2
         [STAThread]
         static void Main(string[] args)
         {
+
+            Logger.Instance.Log(LogLevel.Information, $"Program starts in 10 sec");
+            Thread.Sleep(10000);
             //loop through images and paste
             var images = GetAllFilePaths(imageFolder);
             var words = GetAllFilePaths(textFolder);
@@ -89,15 +92,15 @@ namespace AutoClicker_broadcast2
 
 
                 //go to search bar
-                MouseLClick(-1229, 340);
-                MouseLClick(-1229, 340);
+                MouseLClick(191, 37);
+                MouseLClick(191, 37);
                 //paste the groupName
                 CopyAndPaste(groupName);
-                //select the first one in the 
+                //select the first result
 
-                MouseLClick(-1232, 426);
+                MouseLClick(128, 117);
                 //select the chat panel
-                MouseLClick(-916, 969);
+                MouseLClick(420, 967);
 
                 
                 foreach (var imgPath in images)
@@ -122,6 +125,22 @@ namespace AutoClicker_broadcast2
                 SimKeyboard.KeyDown(13);
                 Thread.Sleep(100);
                 SimKeyboard.KeyUp(13);
+
+                //send out the contact card
+                //1. click on the contacts tab
+                //
+                MouseLClick(14, 131);
+                //2. R click first one in star firends
+                MouseRClick(231, 223);
+                //3. L click on the third option in the dropdown
+                MouseLClick(296, 299);
+                //4. paste in the group name
+                CopyAndPaste(groupName);
+                //5.L click on the first result
+                MouseLClick(824, 404);
+                //6.L click on send button
+                MouseLClick(1095, 747);
+
             }
 
             Logger.Instance.Log(LogLevel.Information, $"end sending msgs to {groups.Count} groups");
@@ -162,6 +181,15 @@ namespace AutoClicker_broadcast2
         {
 
             SimMouse.Click(MouseButtons.Left, x, y);
+
+
+            Thread.Sleep(wait.Value);
+        }
+
+        private static void MouseRClick(int x, int y, int? wait = 500)
+        {
+
+            SimMouse.Click(MouseButtons.Right, x, y);
 
 
             Thread.Sleep(wait.Value);
