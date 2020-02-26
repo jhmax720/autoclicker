@@ -15,6 +15,7 @@ namespace AutoClicker_broadcast2
 {
     class Program
     {
+        //use notepad++ to convert to UTF-8
         public static string sourceCSV = ConfigurationManager.AppSettings["sourceCSV"].ToString();
 
         public static string imageFolder = ConfigurationManager.AppSettings["imageFolder"].ToString();
@@ -46,21 +47,7 @@ namespace AutoClicker_broadcast2
                 {
                     var line = reader.ReadLine();
                     var values = line.Split(',');
-
-                    //Byte[] timeoutStrTemp = Encoding.Default.GetBytes(line);
-                    //var line2 = Encoding.UTF8.GetString(timeoutStrTemp);
-
-
-                    //var sb = new StringBuilder();
-                    ////string cTxt = dt.Rows[0][4].ToString();//乱码字符
-                    //foreach (EncodingInfo ei in Encoding.GetEncodings())
-                    //{
-                    //    Byte[] mybyte = System.Text.Encoding.GetEncoding(ei.CodePage).GetBytes(line);
-                    //    sb.Append(ei.Name + "(" + ei.CodePage + "):" + System.Text.Encoding.GetEncoding("gb2312").GetString(mybyte, 0, mybyte.Length) + "\r\n");
-                    //}
-                    //Console.WriteLine(sb.ToString());
-
-
+        
 
                     if(values.Length>2)
                     {
@@ -115,8 +102,8 @@ namespace AutoClicker_broadcast2
 
                 }
                 foreach (var wordPath in words)
-                {
-                    var content = File.ReadAllText(wordPath);
+                {   
+                    var content = File.ReadAllText(wordPath, Encoding.UTF8);
                     CopyAndPaste(content);                
                 }
 
@@ -125,6 +112,16 @@ namespace AutoClicker_broadcast2
                 SimKeyboard.KeyDown(13);
                 Thread.Sleep(100);
                 SimKeyboard.KeyUp(13);
+
+
+                //wechat search has a bug
+                var mod = groupName.Trim();
+                if (mod.Contains(" "))
+                {
+                    //have to take the longest piece
+                    mod = mod.Split(' ').OrderByDescending(s => s.Length).First();
+
+                }
 
                 //send out the contact card
                 //1. click on the contacts tab
@@ -135,11 +132,11 @@ namespace AutoClicker_broadcast2
                 //3. L click on the third option in the dropdown
                 MouseLClick(296, 299);
                 //4. paste in the group name
-                CopyAndPaste(groupName);
+                CopyAndPaste(mod);
                 //5.L click on the first result
-                MouseLClick(824, 404);
+                MouseLClick(824, 404, 1000);
                 //6.L click on send button
-                MouseLClick(1095, 747);
+                MouseLClick(1095, 747, 1000);
 
             }
 
@@ -147,7 +144,12 @@ namespace AutoClicker_broadcast2
         }
         private static void CopyAndPaste(string text)
         {
-            Clipboard.SetText(text);
+            byte[] UTF8encodes = UTF8Encoding.UTF8.GetBytes(text);
+
+            //get the string from UTF8 encoding
+            string plainText = UTF8Encoding.UTF8.GetString(UTF8encodes);
+
+            Clipboard.SetText(plainText);
             Thread.Sleep(300);
             Paste();
         }
@@ -177,7 +179,7 @@ namespace AutoClicker_broadcast2
 
 
 
-        private static void MouseLClick(int x, int y, int? wait = 500)
+        private static void MouseLClick(int x, int y, int? wait = 600)
         {
 
             SimMouse.Click(MouseButtons.Left, x, y);
@@ -186,7 +188,7 @@ namespace AutoClicker_broadcast2
             Thread.Sleep(wait.Value);
         }
 
-        private static void MouseRClick(int x, int y, int? wait = 500)
+        private static void MouseRClick(int x, int y, int? wait = 600)
         {
 
             SimMouse.Click(MouseButtons.Right, x, y);
